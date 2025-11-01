@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+              xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+              xmlns:vm="clr-namespace:BoTech.SharpStudio.ViewModels.Dialogs"
+              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+              x:Class="BoTech.SharpStudio.Views.Dialogs.GenericDialogView"
+              x:DataType="vm:GenericDialogViewModel">
+    <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <materialIcons:MaterialIcon Kind="{Binding Icon}" 
+                                        Foreground="{Binding IconColor}"
+                                        Animation="{Binding IconAnimation}"
+                                        Width="64"
+                                        Height="64"/>
+            <ContentControl Content="{Binding ContentOfTheDialog}"></ContentControl>
+        </StackPanel>
+        <ItemsControl ItemsSource="{Binding DialogButtons}"
+                      HorizontalAlignment="Right">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="vm:DialogButton">
+                    <Button Classes="Small"
+                            IsEnabled="{Binding IsEnabled}"
+                            Command="{Binding OnClickCommand}">
+                        <TextBlock Text="{Binding ButtonText}"/>
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>

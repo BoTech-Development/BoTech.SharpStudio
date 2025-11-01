@@ -1,0 +1,28 @@
+<shadUi:Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:BoTech.SharpStudio.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:BoTech.SharpStudio.Views"
+        xmlns:shadUi="clr-namespace:ShadUI;assembly=ShadUI"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="BoTech.SharpStudio.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="BoTech.SharpStudio"
+        x:DataType="vm:MainViewModel">
+        <shadUi:Window.LogoContent>
+                <PathIcon
+                        Width="14"
+                        Height="14"
+                        Margin="8,8,0,8"
+                        Data="{x:Static shadUi:Icons.Logo}" />
+        </shadUi:Window.LogoContent>
+        <shadUi:Window.Hosts>
+                <shadUi:DialogHost Manager="{Binding DialogManager}" Owner="{Binding RelativeSource={RelativeSource AncestorType=shadUi:Window}}" />
+        </shadUi:Window.Hosts>
+    <Panel>
+        <ContentPresenter Content="{Binding CurrentContent}"/>
+        <shadUi:ToastHost Manager="{Binding ToastManager}" />
+    </Panel>
+        
+</shadUi:Window>

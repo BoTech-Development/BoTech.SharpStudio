@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WebAssembly">
+    <PropertyGroup>
+        <TargetFramework>net9.0-browser</TargetFramework>
+        <OutputType>Exe</OutputType>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" />
+        <PackageReference Include="Avalonia.Browser"/>
+        <PackageReference Include="Avalonia.ReactiveUI" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+        <PackageReference Include="ShadUI" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\BoTech.SharpStudio\BoTech.SharpStudio.csproj"/>
+    </ItemGroup>
+</Project>

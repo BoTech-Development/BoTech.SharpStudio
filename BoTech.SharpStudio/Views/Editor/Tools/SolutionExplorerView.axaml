@@ -1,0 +1,30 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:BoTech.SharpStudio.ViewModels.Editor.Tools"
+			 xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+			 xmlns:vm="clr-namespace:BoTech.SharpStudio.ViewModels.Editor.Tools"
+             x:Class="BoTech.SharpStudio.SolutionExplorerView"
+			 x:DataType="vm:SolutionExplorerViewModel">
+	<shadui:Card
+		Margin="4"
+		HorizontalAlignment="Center"
+		HasShadow="True">
+		<shadui:Card.Header>
+			<StackPanel>
+				<shadui:CardTitle>Solution Explorer</shadui:CardTitle>
+				<shadui:CardDescription>Your Solution and Projects</shadui:CardDescription>
+			</StackPanel>
+		</shadui:Card.Header>
+		<TreeView ItemsSource="{Binding SolutionNodes}"
+				 CornerRadius="8">
+			<TreeView.ItemTemplate>
+				<TreeDataTemplate ItemsSource="{Binding Children}"
+								  DataType="{x:Type local:ItemNode}">
+					<TextBlock Text="{Binding Name}"/>
+				</TreeDataTemplate>
+			</TreeView.ItemTemplate>
+		</TreeView>
+	</shadui:Card>
+</UserControl>

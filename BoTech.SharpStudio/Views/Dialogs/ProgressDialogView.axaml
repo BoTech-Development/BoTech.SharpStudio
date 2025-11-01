@@ -1,0 +1,16 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:BoTech.SharpStudio.ViewModels.Dialogs"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BoTech.SharpStudio.Views.Dialogs.ProgressDialogView"
+             x:DataType="vm:ProgressDialogViewModel">
+    <StackPanel Orientation="Vertical">
+        <TextBlock Text="{Binding ProgressText}"/>
+        <ProgressBar Minimum="{Binding Minimum}"
+                     Maximum="{Binding Maximum}" 
+                     Value="{Binding Value}" 
+                     IsIndeterminate="{Binding IsIndeterminate}"/>
+    </StackPanel>
+</UserControl>

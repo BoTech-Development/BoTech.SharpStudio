@@ -1,0 +1,114 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shadUi="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:vm="clr-namespace:BoTech.SharpStudio.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BoTech.SharpStudio.Views.WelcomeView"
+             x:DataType="vm:WelcomeViewModel">
+    <Design.DataContext>
+        <vm:WelcomeViewModel/>
+    </Design.DataContext>
+    <shadUi:Card
+        Margin="4"
+        HorizontalAlignment="Center"
+        HasShadow="True">
+        <shadUi:Card.Header>
+            <StackPanel Orientation="Horizontal">
+                <Border Padding="8"
+                        BorderBrush="#19171717"
+                        BorderThickness="2"
+                        CornerRadius="8"
+                        Margin="0,0,8,0">
+                    <avalonia:MaterialIcon Kind="Code"
+                                           Height="64"
+                                           Width="64"/>
+                </Border>
+                <StackPanel Orientation="Vertical"
+                            VerticalAlignment="Center">
+                    <shadUi:CardTitle>Welcome to BoTech.SharpStudio®</shadUi:CardTitle>
+                    <shadUi:CardDescription>Your Idea starts here.™</shadUi:CardDescription>
+                </StackPanel>
+            </StackPanel>
+        </shadUi:Card.Header>
+        <StackPanel Spacing="16">
+            <DockPanel>
+                <Button Classes="Primary"
+                        Width="170">
+                    Create new Project
+                </Button>
+                <Button Classes="Primary"
+                        HorizontalAlignment="Right"
+                        Margin="8,0,0,0"
+                        Command="{Binding GetSolutionFromVersionCommand}">
+                    Get from VCS
+                </Button>
+                <Button Classes="Primary"
+                        HorizontalAlignment="Right"
+                        Margin="8,0,0,0"
+                        Command="{Binding OpenCommand}">
+                    Open
+                </Button>
+            </DockPanel>
+            <ItemsControl ItemsSource="{Binding RecentProjects}">
+                <ItemsControl.DataTemplates>
+                    <DataTemplate DataType="vm:ProjectViewModel">
+                        <Border Padding="8"
+                                BorderBrush="#19171717"
+                                BorderThickness="2"
+                                CornerRadius="8"
+                                Margin="0,0,0,8">
+                            <Button>
+                                <StackPanel Orientation="Horizontal">
+                                    <Border BorderBrush="#19171717"
+                                            BorderThickness="2"
+                                            CornerRadius="8">
+                                        <Border.Background>
+                                            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                                                <GradientStop Color="{Binding FirstGradientColor}" Offset="0.0"/>
+                                                <GradientStop Color="{Binding SecondGradientColor}" Offset="0.25"/>
+                                                <GradientStop Color="{Binding ThirdGradientColor}" Offset="0.5"/>
+                                                <GradientStop Color="{Binding FourthGradientColor}" Offset="1.0"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                        <TextBlock Margin="4"
+                                                   VerticalAlignment="Center"
+                                                   Text="{Binding ProjectShortName}"/>
+                                    </Border>
+                                    <StackPanel Orientation="Vertical"
+                                                    Margin="8,0,0,0">
+                                        <TextBlock Classes="Large"
+                                                   Text="{Binding ProjectName}"/>
+                                        <TextBlock Text="{Binding SubInfo}"/>
+                                    </StackPanel>
+                                    <Button HorizontalAlignment="Right"
+                                            Margin="70,0,0,0"
+                                            Classes="Outline">
+                                        <avalonia:MaterialIcon Kind="DotsHorizontal"
+                                                               Width="24"
+                                                               Height="24"/>
+                                    </Button>
+                                </StackPanel>
+                            </Button>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.DataTemplates>
+            </ItemsControl>
+        </StackPanel>
+        <shadUi:Card.Footer>
+            <DockPanel>
+                <Button
+                    Margin="0,20,0,0"
+                    HorizontalAlignment="Left"
+                    Classes="Outline">
+                    <avalonia:MaterialIcon Kind="Settings"/>
+                </Button>
+                <TextBlock  Margin="0,30,0,0"
+                            HorizontalAlignment="Right"
+                            Text="{Binding VersionInfo}"/>
+            </DockPanel>
+        </shadUi:Card.Footer>
+    </shadUi:Card>
+</UserControl>

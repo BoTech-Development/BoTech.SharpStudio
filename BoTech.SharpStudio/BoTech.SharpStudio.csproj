@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" />
+        <PackageReference Include="Avalonia.Themes.Fluent" />
+        <PackageReference Include="Avalonia.Fonts.Inter" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.Diagnostics">
+            <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+            <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="DialogHost.Avalonia" />
+        <PackageReference Include="Dock.Avalonia" />
+        <PackageReference Include="Dock.Avalonia.Themes.Fluent" />
+        <PackageReference Include="Dock.Model.Extensions.DependencyInjection" />
+        <PackageReference Include="Dock.Model.ReactiveUI" />
+        <PackageReference Include="Dock.Serializer" />
+        <PackageReference Include="Material.Icons.Avalonia" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+        <PackageReference Include="ReactiveUI.Avalonia" />
+        <PackageReference Include="ShadUI" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BoTech.SharpStudio.CSharpEngine\BoTech.SharpStudio.CSharpEngine.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ViewModels\Editor\Documents\" />
+      <Folder Include="Views\Editor\Documents\" />
+    </ItemGroup>
+</Project>

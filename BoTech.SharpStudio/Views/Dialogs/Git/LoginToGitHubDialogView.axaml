@@ -1,0 +1,48 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shadUi="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:vm="clr-namespace:BoTech.SharpStudio.ViewModels.Dialogs.Git"
+             
+             x:Class="BoTech.SharpStudio.Views.Dialogs.Git.LoginToGitHubDialogView"
+             x:DataType="vm:LoginToGitHubDialogViewModel">
+    <StackPanel
+        Width="275"
+        Margin="24"
+        Spacing="16">
+        <Border BorderBrush="#FF71717A"
+                BorderThickness="2"
+                CornerRadius="8"
+                Padding="4">
+            <Image Source="/Assets/github-logo.jpg"/>
+        </Border>
+        <TextBlock Classes="h4" Text="Sign In to GitHub.com" />
+        <TextBox
+            shadUi:ControlAssist.Label="Email or UserName"
+            shadUi:ElementAssist.FocusOnLoad="True"
+            Classes="Clearable"
+            Text="{Binding UserName, Mode=TwoWay}"
+            Watermark="user@example.com or UserName" />
+        <TextBox
+            shadUi:ControlAssist.Label="Password"
+            Classes="PasswordReveal"
+            PasswordChar="•"
+            Text="{Binding Password, Mode=TwoWay}"
+            Watermark="Enter password" />
+        <StackPanel Margin="0,24,0,0" Spacing="16">
+            <Button
+                Classes="Primary"
+                Command="{Binding LoginCommand}"
+                HotKey="Enter">
+                Login
+            </Button>
+            <Button
+                Classes="Outline"
+                Command="{Binding CancelCommand}"
+                HotKey="Escape">
+                Cancel
+            </Button>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

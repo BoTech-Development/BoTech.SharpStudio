@@ -1,0 +1,32 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:vm="clr-namespace:BoTech.SharpStudio.ViewModels.Editor"
+             x:Class="BoTech.SharpStudio.EditorContainer"
+			 x:DataType="vm:EditorContainerViewModel">
+	<StackPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="_File">
+				<MenuItem Header="_Open..."/>
+				<Separator/>
+				<MenuItem Header="_Exit"/>
+			</MenuItem>
+			<MenuItem Header="_Edit">
+				<MenuItem Header="Copy"/>
+				<MenuItem Header="Paste"/>
+			</MenuItem>
+		</Menu>
+		<Grid ColumnDefinitions="25*, 50*, 25*"
+              RowDefinitions="Auto">
+            <ContentControl Grid.Column="0"
+                            Content="{Binding EditorLeftPaneView}"/>
+			<ContentControl Grid.Column="1"
+			                Content="{Binding EditorDocumentView}"/>
+			<ContentControl Grid.Column="2"
+                            Content="{Binding EditorRightPaneView}"/>
+        </Grid>
+		<TextBlock>Status: Ready!</TextBlock>
+    </StackPanel>
+</UserControl>

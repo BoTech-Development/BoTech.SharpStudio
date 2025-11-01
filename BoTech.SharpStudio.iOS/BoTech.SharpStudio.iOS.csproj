@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net9.0-ios</TargetFramework>
+        <SupportedOSPlatformVersion>13.0</SupportedOSPlatformVersion>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" />
+        <PackageReference Include="Avalonia.iOS"/>
+        <PackageReference Include="Avalonia.ReactiveUI" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+        <PackageReference Include="ShadUI" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\BoTech.SharpStudio\BoTech.SharpStudio.csproj"/>
+    </ItemGroup>
+</Project>
