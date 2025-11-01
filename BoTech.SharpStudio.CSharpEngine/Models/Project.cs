@@ -1,4 +1,5 @@
-﻿using Microsoft.Build.Construction;
+﻿using BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles;
+using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
 namespace BoTech.SharpStudio.CSharpEngine.Models;
@@ -31,8 +32,9 @@ public class Project : IInitializable
     /// A List of all Projects that this project needs to compile.
     /// </summary>
     public List<Project> DependsOn { get; private set; } = new List<Project>();
+    public FilesSystemItem ProjectFiles { get; private set;  }
 
-    private Solution _solution;
+	private Solution _solution;
 
     public Project(Solution solution, ProjectInSolution projectInSolution, Microsoft.Build.Evaluation.Project loadedProject)
     {
@@ -41,7 +43,8 @@ public class Project : IInitializable
         Guid = projectInSolution.ProjectGuid;
         AbsolutePath = projectInSolution.AbsolutePath;
         ProjectInfo = loadedProject;
-    }
+        ProjectFiles = new FilesSystemItem(new DirectoryInfo(loadedProject.DirectoryPath));
+	}
 
     /// <inheritdoc />
     public void Initialize()

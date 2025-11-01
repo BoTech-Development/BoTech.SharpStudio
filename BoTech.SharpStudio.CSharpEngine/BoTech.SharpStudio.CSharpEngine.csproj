@@ -12,8 +12,8 @@
       <PackageReference Include="Microsoft.Build">
           <ExcludeAssets>runtime</ExcludeAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.Build.Locator"/>
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection"/>
+      <PackageReference Include="Microsoft.Build.Locator" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
       <PackageReference Include="StaticViewLocator">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
