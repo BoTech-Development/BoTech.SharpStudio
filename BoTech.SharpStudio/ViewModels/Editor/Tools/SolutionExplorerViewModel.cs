@@ -1,5 +1,6 @@
 ﻿using BoTech.SharpStudio.CSharpEngine.Models;
 using BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles;
+using Material.Icons;
 using Microsoft.Build.Construction;
 using Microsoft.VisualBasic;
 using System;
@@ -20,7 +21,7 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
         public void InitializeTool()
         {
             SolutionNodes.Clear();
-            SolutionNodes.Add(new ItemNode()
+            SolutionNodes.Add(new ItemNode(CurrentObject.FileSystemItem)
             {
                 Name = System.IO.Path.GetFileName(CurrentObject.AbsolutePath),
                 Solution = CurrentObject,
@@ -29,25 +30,25 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
 		}
         private List<ItemNode> CreateProjectItemNodes(Solution solution)
         {
-            ItemNode temp = new ItemNode();
+            ItemNode temp;
 			List<ItemNode> projectNodes = new List<ItemNode>();
 			foreach (var project in solution.Projects)
             {
-                temp = new ItemNode()
+                temp = new ItemNode(project.FileSystemItem)
                 {
                     Name = project.Name,
                     Project = project
                 };
 				// We need this foreach loop because the root folder should not be inserted "twice" into the Solution Explorer. 
-				foreach (var child in project.ProjectFiles.Children)
+				foreach (var child in project.FileSystemItem.Children)
 					CreateFileSystemItemNodesForProject(child, temp);
 				projectNodes.Add(temp);
 			}
             return projectNodes;
 		}
-        private void CreateFileSystemItemNodesForProject(FilesSystemItem item, ItemNode parentNode)
+        private void CreateFileSystemItemNodesForProject(FileSystemItem item, ItemNode parentNode)
         {
-            ItemNode newNode = new ItemNode()
+            ItemNode newNode = new ItemNode(item)
             {
                 Name = item.Name,
                 FileSystemItem = item
@@ -72,9 +73,19 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
     {
         public string Name { get; set; }
         public ObservableCollection<ItemNode> Children { get; set; } = new ObservableCollection<ItemNode>();
-        public FilesSystemItem FileSystemItem { get; set; }
+        public FileSystemItem FileSystemItem { get; set; }
 		public Solution? Solution { get; set; }
         public Project? Project { get; set; }
-		public ItemNode() { }
+        public MaterialIconKind Icon { get; private set; }
+		public ItemNode(FileSystemItem fileSystemItem) 
+        {
+           
+            if(fileSystemItem.FileWithActions != null)
+                Icon = fileSystemItem.FileWithActions.Icon;
+			else
+			    Icon = MaterialIconKind.FolderOutline;
+		    FileSystemItem = fileSystemItem;
+            
+		}
 	}
 }

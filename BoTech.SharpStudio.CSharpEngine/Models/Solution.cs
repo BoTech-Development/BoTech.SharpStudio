@@ -1,10 +1,15 @@
-﻿using Microsoft.Build.Construction;
+﻿using BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles;
+using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 
 namespace BoTech.SharpStudio.CSharpEngine.Models;
 
 public class Solution
 {
+    /// <summary>
+    /// Info about the .sln File
+    /// </summary>
+    public FileSystemItem  FileSystemItem { get; set; }
     /// <summary>
     /// The parsed .sln File.
     /// </summary>
@@ -36,12 +41,16 @@ public class Solution
     /// All projects in the Solution
     /// </summary>
     public List<Project> Projects { get; set; } = new List<Project>();
-    public ProjectCollection ProjectCollection { get; private set; }
+	/// <summary>
+	/// Created by Microsoft.Build.Evaluation to load Projects
+	/// </summary>
+	public ProjectCollection ProjectCollection { get; private set; }
 
     public Solution(SolutionFile solutionFile, string absolutePath)
     {
         SolutionFile = solutionFile;
         AbsolutePath = absolutePath;
         ProjectCollection = new ProjectCollection();
-    }
+        FileSystemItem = new FileSystemItem(new FileInfo(absolutePath));
+	}
 }

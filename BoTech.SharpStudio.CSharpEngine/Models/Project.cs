@@ -10,11 +10,14 @@ namespace BoTech.SharpStudio.CSharpEngine.Models;
 /// </summary>
 public class Project : IInitializable
 {
-    
-    /// <summary>
-    /// The parsed Info of this Project.
-    /// </summary>
-    public  Microsoft.Build.Evaluation.Project ProjectInfo { get; private set; }
+	/// <summary>
+	/// Info about the .csproj File
+	/// </summary>
+	public FileSystemItem FileSystemItem { get; set; }
+	/// <summary>
+	/// The parsed Info of this Project.
+	/// </summary>
+	public  Microsoft.Build.Evaluation.Project ProjectInfo { get; private set; }
     /// <summary>
     /// The Name of the Project, based on the <see cref="ProjectInSolution"/> param in the <see cref="Project"/> Constructor.
     /// </summary>
@@ -32,8 +35,7 @@ public class Project : IInitializable
     /// A List of all Projects that this project needs to compile.
     /// </summary>
     public List<Project> DependsOn { get; private set; } = new List<Project>();
-    public FilesSystemItem ProjectFiles { get; private set;  }
-
+ 
 	private Solution _solution;
 
     public Project(Solution solution, ProjectInSolution projectInSolution, Microsoft.Build.Evaluation.Project loadedProject)
@@ -43,7 +45,7 @@ public class Project : IInitializable
         Guid = projectInSolution.ProjectGuid;
         AbsolutePath = projectInSolution.AbsolutePath;
         ProjectInfo = loadedProject;
-        ProjectFiles = new FilesSystemItem(new DirectoryInfo(loadedProject.DirectoryPath));
+		FileSystemItem = new FileSystemItem(new DirectoryInfo(loadedProject.DirectoryPath));
 	}
 
     /// <inheritdoc />
