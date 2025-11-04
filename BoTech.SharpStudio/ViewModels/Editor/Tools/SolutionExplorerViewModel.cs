@@ -1,6 +1,8 @@
 ﻿using Avalonia.Controls;
 using BoTech.SharpStudio.CSharpEngine.Models;
+using BoTech.SharpStudio.CSharpEngine.Models.CSharp;
 using BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles;
+using BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles.FileTypes;
 using Material.Icons;
 using Microsoft.Build.Construction;
 using Microsoft.VisualBasic;
@@ -140,13 +142,50 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
 		public Solution? Solution { get; set; }
         public Project? Project { get; set; }
         public MaterialIconKind Icon { get; private set; }
-		public ItemNode(FileSystemItem fileSystemItem) 
+        /// <summary>
+        /// true if special icons (like access modifier and type) are set
+        /// </summary>
+        public bool SpecialIconsVisible { get; set; } = false;
+        public MaterialIconKind AccessModifierIcon { get; private set; }
+        public MaterialIconKind TypeIcon { get; private set; }
+        public ItemNode(FileSystemItem fileSystemItem) 
         {
-            if(fileSystemItem.FileWithActions != null)
+            if (fileSystemItem.FileWithActions != null)
+            {
                 Icon = fileSystemItem.FileWithActions.Icon;
-			else
-			    Icon = MaterialIconKind.FolderOutline;
+                if(fileSystemItem.FileWithActions is CSharpFile csharpFile)
+                {
+                    UpdateAccessModifierIcon(csharpFile.AccessModifier);
+                    UpdateTypeModifierIcon(csharpFile.Type);
+                    SpecialIconsVisible = true;
+                }
+            }
+            else
+                Icon = MaterialIconKind.FolderOutline;
 		    FileSystemItem = fileSystemItem;
 		}
-	}
+        private void UpdateAccessModifierIcon(AccessModifier accessModifier)
+        {
+            AccessModifierIcon = accessModifier switch
+            {
+                AccessModifier.Public => MaterialIconKind.LockOpenOutline,
+                AccessModifier.Private => MaterialIconKind.LockOutline,
+                AccessModifier.Protected => MaterialIconKind.LockPlusOutline,
+                AccessModifier.Internal => MaterialIconKind.LockMinusOutline,
+                AccessModifier.ProtectedInternal => MaterialIconKind.LockRemoveOutline,
+                _ => MaterialIconKind.LockQuestion,
+            };
+        }
+        private void UpdateTypeModifierIcon(CSharpFileType fileType)
+        {
+            TypeIcon = fileType switch
+            {
+                CSharpFileType.Class => MaterialIconKind.FormatListBulletedType,
+                CSharpFileType.Interface => MaterialIconKind.FormatListChecks,
+                CSharpFileType.Enum => MaterialIconKind.FormatListNumbered,
+                CSharpFileType.Struct => MaterialIconKind.FormatListBulleted,
+                _ => MaterialIconKind.FileOutline,
+            };
+        }
+    }
 }

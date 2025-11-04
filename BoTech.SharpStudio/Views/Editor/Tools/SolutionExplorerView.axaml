@@ -7,7 +7,8 @@
 			 xmlns:vm="clr-namespace:BoTech.SharpStudio.ViewModels.Editor.Tools"
 			 xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              x:Class="BoTech.SharpStudio.SolutionExplorerView"
-			 x:DataType="vm:SolutionExplorerViewModel">
+			 x:DataType="vm:SolutionExplorerViewModel"
+			 Width="330">
 	<shadui:Card
 		Margin="4"
 		HorizontalAlignment="Center"
@@ -55,7 +56,17 @@
 							<materialIcons:MaterialIcon Kind="{Binding Icon}"
 										  Width="22"
 										  Height="22"
-										  Margin="5,0,5,0"/>
+										  Margin="5,0,0,0"/>
+							<materialIcons:MaterialIcon Kind="{Binding AccessModifierIcon}"
+										  Width="16"
+										  Height="16"
+										  Margin="2,0,0,0"
+										  IsVisible="{Binding SpecialIconsVisible}"/>
+							<materialIcons:MaterialIcon Kind="{Binding TypeIcon}"
+										  Width="16"
+										  Height="16"
+										  Margin="0,0,5,0"
+										  IsVisible="{Binding SpecialIconsVisible}"/>
 							<TextBlock Text="{Binding Name}"
 								   VerticalAlignment="Center"/>
 						</StackPanel>

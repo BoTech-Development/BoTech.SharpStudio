@@ -63,8 +63,10 @@ public class WelcomeViewModel : ViewModelBase
                 AllowMultiple = false,
             }).Result.ToList();
             Console.WriteLine($"You selected {files[0].Name} => {files[0].Path}");
-            Solution solution = new SolutionController().LoadSolutionFromFile(files[0].Path.AbsolutePath);
-            Dispatcher.UIThread.InvokeAsync(() =>
+            SolutionController controller = new SolutionController();
+            Solution solution = controller.LoadSolutionFromFile(files[0].Path.AbsolutePath);
+            controller.AnalyzeSolution(solution);
+			Dispatcher.UIThread.InvokeAsync(() =>
             {
                 _toastManager.CreateToast($"Solution {solution.SolutionFolderPath} loaded with {solution.Projects.Count} projects.")
                     .WithContent("You can now start working on your solution.")

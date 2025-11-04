@@ -8,7 +8,7 @@ namespace BoTech.SharpStudio.CSharpEngine.Models;
 /// This class is used to extract the most important information from the <see cref="ProjectInSolution"/> class.<br/>
 /// This class can also be serialized and thus saved.
 /// </summary>
-public class Project : IInitializable
+public class Project : IInitializable, IAnalyzable
 {
 	/// <summary>
 	/// Info about the .csproj File
@@ -35,7 +35,11 @@ public class Project : IInitializable
     /// A List of all Projects that this project needs to compile.
     /// </summary>
     public List<Project> DependsOn { get; private set; } = new List<Project>();
- 
+
+    public bool HasErrors { get; }
+
+    public bool HasWarnings { get; }
+
 	private Solution _solution;
 
     public Project(Solution solution, ProjectInSolution projectInSolution, Microsoft.Build.Evaluation.Project loadedProject)
@@ -75,5 +79,10 @@ public class Project : IInitializable
                     DependsOn.Add(dependProject);
             }
         }
+    }
+
+    public void AnalyzeFile()
+    {
+    
     }
 }

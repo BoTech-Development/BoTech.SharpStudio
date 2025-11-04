@@ -9,9 +9,14 @@ namespace BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles.FileTypes
 {
     public abstract class AFile : IFileWithActions
     {
-        public FileSystemItem FileInfo { get; }
-
-        public MaterialIconKind Icon { get; protected set; }
+		/// <inheritdoc/>
+		public FileSystemItem FileInfo { get; }
+		/// <inheritdoc/>
+		public MaterialIconKind Icon { get; protected set; }
+		/// <inheritdoc/>
+		public bool HasErrors { get; }
+		/// <inheritdoc/>
+		public bool HasWarnings { get; }
 
 		protected AFile(FileSystemItem file)
         {
@@ -36,5 +41,6 @@ namespace BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles.FileTypes
 		public abstract void RenameFile(string newName);
 		/// <inheritdoc/>
 		public abstract void RenameFileSavely(string newName);
+
     }
 }

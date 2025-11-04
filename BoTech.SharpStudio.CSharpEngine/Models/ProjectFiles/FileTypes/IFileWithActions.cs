@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles.FileTypes
 {
-    public interface IFileWithActions	: IFile
+    public interface IFileWithActions : IFile, IAnalyzable
 	{
 		/// <summary>
 		/// Moves the file to the specified path, updating its location within the file system.
@@ -40,6 +40,6 @@ namespace BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles.FileTypes
 		/// </summary>
 		/// <param name="newName">The new name for the file. Must be a valid file name and cannot be null or empty.</param>
 		public void RenameFileSavely(string newName);
-		public void AnalyzeFile();
+		
 	}
 }
