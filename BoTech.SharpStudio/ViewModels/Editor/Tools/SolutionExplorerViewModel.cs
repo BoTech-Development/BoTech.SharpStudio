@@ -7,10 +7,12 @@ using Material.Icons;
 using Microsoft.Build.Construction;
 using Microsoft.VisualBasic;
 using ReactiveUI;
+using ShadUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -47,16 +49,53 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
 			}
         }
         private bool _isSolutionView = true;
+        public ReactiveCommand<ItemNode, Unit> EditDependenciesCommand => ReactiveCommand.Create<ItemNode>(node =>
+        {
+            if (node.Project != null)
+            {
+                EditDependenciesForProject(node.Project);
+            }
+            else
+            {
+                ToastManager.CreateToast($"Error loading the EditProjectDependencies View.")
+                    .WithContent("You must select a project not a file or a solution.")
+                    .DismissOnClick()
+                    .ShowError();
+            }
+        });
+        public SolutionExplorerViewModel(DialogManager dialogManager, ToastManager toastManager) : base(dialogManager, toastManager)
+        {
+            
+        }
 
-		public void InitializeTool()
+        public void InitializeTool()
         {
             SolutionNodes.Clear();
-            SolutionNodes.Add(new ItemNode(CurrentObject.FileSystemItem)
+            SolutionNodes.Add(new ItemNode(this, CurrentObject.FileSystemItem)
             {
                 Name = System.IO.Path.GetFileName(CurrentObject.AbsolutePath),
                 Solution = CurrentObject,
                 Children = new ObservableCollection<ItemNode>(CreateProjectItemNodes(CurrentObject))
             });
+        }
+        private void EditDependenciesForProject(Project project)
+        {
+            ManageProjectDependenciesViewModel viewModel = new ManageProjectDependenciesViewModel(DialogManager, ToastManager, CurrentObject, project);
+            DialogManager.CreateDialog(viewModel)
+            .Dismissible()
+            .WithSuccessCallback(vm => SaveDependenciesForProject(vm, project))
+            .WithCancelCallback(() =>
+                ToastManager.CreateToast("Edit Project Dependencies cancelled.")
+                    .DismissOnClick()
+                    .ShowWarning())
+            .Show();
+        }
+        private void SaveDependenciesForProject(ManageProjectDependenciesViewModel vm, Project project)
+        {
+            ToastManager.CreateToast("Loading...")
+                    .WithContent($"Aplying your changes to the dependencies.")
+                    .DismissOnClick()
+                    .ShowInfo();
         }
         private List<ItemNode> CreateProjectItemNodes(Solution solution)
         {
@@ -64,7 +103,7 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
             List<ItemNode> projectNodes = new List<ItemNode>();
             foreach (var project in solution.Projects)
             {
-                temp = new ItemNode(project.FileSystemItem)
+                temp = new ItemNode(this, project.FileSystemItem)
                 {
                     Name = project.Name,
                     Project = project
@@ -80,7 +119,7 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
         {
             if(ShouldExcludeItem(item))
                 return;
-			ItemNode newNode = new ItemNode(item)
+			ItemNode newNode = new ItemNode(this,item)
             {
                 Name = item.Name,
                 FileSystemItem = item
@@ -136,6 +175,7 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
     }
     public class ItemNode
     {
+        public SolutionExplorerViewModel ParentViewModel { get; }
         public string Name { get; set; }
         public ObservableCollection<ItemNode> Children { get; set; } = new ObservableCollection<ItemNode>();
         public FileSystemItem FileSystemItem { get; set; }
@@ -148,8 +188,9 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
         public bool SpecialIconsVisible { get; set; } = false;
         public MaterialIconKind AccessModifierIcon { get; private set; }
         public MaterialIconKind TypeIcon { get; private set; }
-        public ItemNode(FileSystemItem fileSystemItem) 
+        public ItemNode(SolutionExplorerViewModel parent, FileSystemItem fileSystemItem) 
         {
+            ParentViewModel = parent;
             if (fileSystemItem.FileWithActions != null)
             {
                 Icon = fileSystemItem.FileWithActions.Icon;

@@ -1,6 +1,8 @@
-﻿namespace BoTech.SharpStudio.ViewModels.Dialogs;
+﻿using ReactiveUI;
 
-public class DialogPageBase : ViewModelBase
+namespace BoTech.SharpStudio.ViewModels.Dialogs;
+
+public class DialogPageBase : ReactiveObject
 {
     public PagedDialog? Dialog { get; set; }
     public GenericDialogViewModel? DialogSettings { get; set; }

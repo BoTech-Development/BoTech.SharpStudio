@@ -1,0 +1,86 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:avalonia="using:Material.Icons.Avalonia"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shadui="clr-namespace:ShadUI;assembly=ShadUI"
+             xmlns:vm="using:BoTech.SharpStudio.ViewModels.Editor.Tools"
+             x:Class="BoTech.SharpStudio.ManageProjectDependenciesView"
+			 x:DataType="vm:ManageProjectDependenciesViewModel">
+  <shadui:Card
+		Margin="4"
+		HorizontalAlignment="Center"
+		HasShadow="True">
+		<shadui:Card.Header>
+			<StackPanel>
+				<shadui:CardTitle>Manage Project Dependencies</shadui:CardTitle>
+				<shadui:CardDescription>Here you can add and remove dependencies to projects</shadui:CardDescription>
+			</StackPanel>
+		</shadui:Card.Header>
+
+		<StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<TextBlock VerticalAlignment="Center" 
+					     	Margin="0,0,5,0"
+							FontWeight="DemiBold">
+					Current Project:
+				</TextBlock>
+				<ComboBox Width="255" 
+						  SelectedIndex="{Binding SelectedProjectIndex}"
+						  ItemsSource="{Binding AvailableProjects}"/>
+			</StackPanel>
+			
+
+			<ItemsControl ItemsSource="{Binding Dependencies}">
+				<ItemsControl.DataTemplates>
+					<DataTemplate x:DataType="vm:DependencyItemViewModel">
+						<StackPanel Orientation="Horizontal"
+									Margin="3">
+							<CheckBox IsChecked="{Binding IsSelected}" 
+									Content="{Binding ProjectName}"
+									IsEnabled="{Binding IsCheckBoxEnabled}"/>
+							<Border IsVisible="{Binding IsDependencyCircular}"
+									Margin="2"
+									Padding="3"
+									BorderBrush="#F5BA45"
+									Background="#FECD57"
+									BorderThickness="2"
+									CornerRadius="11">
+								<StackPanel Orientation="Horizontal">
+									<avalonia:MaterialIcon Kind="InfoCircle"/>
+									<TextBlock FontWeight="Bold">Circular Dependency</TextBlock>
+								</StackPanel>
+									
+							</Border>
+							<Border IsVisible="{Binding IsTheCurrentProject}"
+									Margin="2"
+									Padding="3"
+									BorderBrush="#F5BA45"
+									Background="#FECD57"
+									BorderThickness="2"
+									CornerRadius="11">
+								<StackPanel Orientation="Horizontal">
+									<avalonia:MaterialIcon Kind="InfoCircle"/>
+									<TextBlock FontWeight="Bold">Current Project</TextBlock>
+								</StackPanel>
+							</Border>
+						</StackPanel>
+					</DataTemplate>
+				</ItemsControl.DataTemplates>
+			</ItemsControl>
+		</StackPanel>
+	  <shadui:Card.Footer>
+		  <StackPanel Orientation="Horizontal"
+						HorizontalAlignment="Right">
+			  <Button Classes="Secondary"
+					  Content="Close"
+					  Margin="0,0,8,0"
+					  Command="{Binding CloseCommand}"/>
+			  <Button Classes="Primary"
+					  Content="Save"
+					  Width="128"
+					  Command="{Binding SaveCommand}"/>
+		  </StackPanel>
+	  </shadui:Card.Footer>
+	</shadui:Card>
+</UserControl>

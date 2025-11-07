@@ -1,0 +1,106 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="80" d:DesignHeight="450"
+             x:Class="BoTech.SharpStudio.Views.Test.BadgesView">
+  <StackPanel>
+	  <Border Margin="2"
+				Padding="3"
+				BorderBrush="#424953"
+				Background="#A9B1BC"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+	  <Border Margin="2"
+				Padding="3"
+				BorderBrush="#CBD0D8"
+				Background="#F4F6F9"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+	  <Border Margin="2"
+				Padding="3"
+				BorderBrush="#E4B693"
+				Background="#F4D0B5"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+	   <Border Margin="2"
+				Padding="3"
+				BorderBrush="#D670AC"
+				Background="#F299CE"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+	  <Border Margin="2"
+				Padding="3"
+				BorderBrush="#967ADA"
+				Background="#B3A5EF"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+	  <Border Margin="2"
+				Padding="3"
+				BorderBrush="#4B89DA"
+				Background="#74B1F4"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+	  <Border Margin="2"
+				Padding="3"
+				BorderBrush="#3AADD9"
+				Background="#66D4F1"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+	  <Border Margin="2"
+				Padding="3"
+				BorderBrush="#35BB9B"
+				Background="#62DDBD"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+		
+		<Border Margin="2"
+				Padding="3"
+				BorderBrush="#9ED36A"
+				Background="#B4E080"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+		<Border Margin="2"
+				Padding="3"
+				BorderBrush="#F5BA45"
+				Background="#FECD57"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+		<Border Margin="2"
+				Padding="3"
+				BorderBrush="#D94452"
+				Background="#F76D82"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+		<Border Margin="2"
+				Padding="3"
+				BorderBrush="#EB563F"
+				Background="#FC8370"
+				BorderThickness="2"
+				CornerRadius="11">
+				<TextBlock FontWeight="Bold">Test-Label</TextBlock>	
+		</Border>
+  </StackPanel>
+</UserControl>

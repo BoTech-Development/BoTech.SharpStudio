@@ -83,7 +83,7 @@ public class GenericDialogViewModel : DialogPageBase
     }
    
 }
-public class DialogButton : ViewModelBase
+public class DialogButton : ReactiveObject
 {
     private bool _isEnabled = true;
 

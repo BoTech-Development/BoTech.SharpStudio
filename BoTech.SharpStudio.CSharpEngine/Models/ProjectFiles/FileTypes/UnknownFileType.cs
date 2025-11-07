@@ -25,7 +25,7 @@ namespace BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles.FileTypes
 
         public override void DeleteFile()
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void DeleteFileSavely()
@@ -35,7 +35,7 @@ namespace BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles.FileTypes
 
         public override void MoveFile(string newPath)
         {
-            throw new NotImplementedException();
+            
         }
 
         public override void MoveFileSavely(string newPath)
@@ -45,7 +45,7 @@ namespace BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles.FileTypes
 
         public override void RenameFile(string newName)
         {
-            throw new NotImplementedException();
+           
         }
 
         public override void RenameFileSavely(string newName)

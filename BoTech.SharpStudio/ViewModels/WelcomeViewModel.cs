@@ -19,8 +19,7 @@ namespace BoTech.SharpStudio.ViewModels;
 
 public class WelcomeViewModel : ViewModelBase
 {
-    private readonly DialogManager _dialogManager;
-    private readonly ToastManager _toastManager;
+  
     public ObservableCollection<ProjectViewModel> RecentProjects { get; set;  } = new ObservableCollection<ProjectViewModel>();
     private string _versionInfo = "Version: v1.0.1.Alpha";
 
@@ -31,24 +30,8 @@ public class WelcomeViewModel : ViewModelBase
     } 
     public ReactiveCommand<Unit, Unit> OpenCommand { get; }
     public ReactiveCommand<Unit, Unit> GetSolutionFromVersionCommand { get; }
-    public WelcomeViewModel(DialogManager dialogManager, ToastManager toastManager)
+    public WelcomeViewModel(DialogManager dialogManager, ToastManager toastManager) : base(dialogManager, toastManager)
     {
-        _dialogManager = dialogManager;
-        _toastManager = toastManager;
-        /*
-        RecentProjects = new ObservableCollection<ProjectViewModel>()
-        {
-            new ProjectViewModel()
-            {
-                ProjectName = "BoTech.SharpStudio",
-                ProjectColor = Brushes.Green,
-                FirstGradientColor = Colors.LimeGreen,
-                SecondGradientColor = Colors.MediumSeaGreen,
-                ThirdGradientColor = Colors.LimeGreen,
-                FourthGradientColor =  Colors.LightSeaGreen,
-                SubInfo = "13.09.25"
-            }
-        };*/
         OpenCommand = ReactiveCommand.Create(SelectAndOpenSolution);
         GetSolutionFromVersionCommand = ReactiveCommand.Create(GetSolutionFromVersionControl);
     }
@@ -68,11 +51,11 @@ public class WelcomeViewModel : ViewModelBase
             controller.AnalyzeSolution(solution);
 			Dispatcher.UIThread.InvokeAsync(() =>
             {
-                _toastManager.CreateToast($"Solution {solution.SolutionFolderPath} loaded with {solution.Projects.Count} projects.")
+                ToastManager.CreateToast($"Solution {solution.SolutionFolderPath} loaded with {solution.Projects.Count} projects.")
                     .WithContent("You can now start working on your solution.")
                     .DismissOnClick()
                     .ShowSuccess();
-				EditorContainerViewModel vm = new EditorContainerViewModel();
+				EditorContainerViewModel vm = new EditorContainerViewModel(DialogManager, ToastManager);
                 vm.OnSolutionLoaded(solution);
 				MainViewModel.CurrentInstance.CurrentContent = new EditorContainer()
 				{
@@ -86,11 +69,11 @@ public class WelcomeViewModel : ViewModelBase
 
     private void GetSolutionFromVersionControl()
     {
-        LoginToGitHubDialogViewModel vm = new LoginToGitHubDialogViewModel(_dialogManager);
-        _dialogManager.CreateDialog(vm)
+        LoginToGitHubDialogViewModel vm = new LoginToGitHubDialogViewModel(DialogManager, ToastManager);
+        DialogManager.CreateDialog(vm)
             .Dismissible()
             .WithSuccessCallback(() =>
-                _toastManager.CreateToast($"Sign in successful {vm.UserName} + {vm.Password}")
+                ToastManager.CreateToast($"Sign in successful {vm.UserName} + {vm.Password}")
                     .WithContent(new Button()
                     {
                         Content = "Login",
@@ -98,7 +81,7 @@ public class WelcomeViewModel : ViewModelBase
                     .DismissOnClick()
                     .ShowSuccess())
             .WithCancelCallback(() =>
-                _toastManager.CreateToast("Sign in cancelled")
+                ToastManager.CreateToast("Sign in cancelled")
                     .WithContent("Please sign in to continue.")
                     .DismissOnClick()
                     .ShowWarning())

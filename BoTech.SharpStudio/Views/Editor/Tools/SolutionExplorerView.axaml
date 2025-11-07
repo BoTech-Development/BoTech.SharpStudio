@@ -69,6 +69,13 @@
 										  IsVisible="{Binding SpecialIconsVisible}"/>
 							<TextBlock Text="{Binding Name}"
 								   VerticalAlignment="Center"/>
+							<StackPanel.ContextMenu>
+								<ContextMenu>
+									<MenuItem Header="Edit Project Dependencies"
+											  Command="{Binding ParentViewModel.EditDependenciesCommand}"
+											  CommandParameter="{Binding}"/>
+								</ContextMenu>
+							</StackPanel.ContextMenu>
 						</StackPanel>
 
 					</TreeDataTemplate>

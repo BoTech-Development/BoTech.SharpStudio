@@ -11,7 +11,7 @@ public class LoginToGitHubDialogViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> LoginCommand { get; }
     public ReactiveCommand<Unit, Unit> CancelCommand { get; }
 
-    public LoginToGitHubDialogViewModel(DialogManager dialogManager)
+    public LoginToGitHubDialogViewModel(DialogManager dialogManager, ToastManager toastManager) : base(dialogManager, toastManager)
     {
         LoginCommand = ReactiveCommand.Create(() => dialogManager.Close(this, new CloseDialogOptions { Success = true }));
         CancelCommand = ReactiveCommand.Create(() => dialogManager.Close(this, new CloseDialogOptions { Success = false }));

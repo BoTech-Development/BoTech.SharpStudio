@@ -5,10 +5,11 @@ using ShadUI;
 
 namespace BoTech.SharpStudio.ViewModels;
 
-public class MainViewModel : ViewModelBase
+public class MainViewModel : ReactiveObject
 {
-    private readonly DialogManager _dialogManager;
-    private readonly ToastManager _toastManager;
+
+     public DialogManager DialogManager { get; set; }
+    public ToastManager ToastManager { get; set; }
     private Control _currentContent = new TextBlock()
     {
         Text = "BoTech.SharpStudio is loading..."
@@ -19,16 +20,15 @@ public class MainViewModel : ViewModelBase
         get => _currentContent; 
         set => this.RaiseAndSetIfChanged(ref _currentContent, value);
     }
-    public DialogManager DialogManager => _dialogManager;
-    public ToastManager ToastManager => _toastManager;
+
     public static MainViewModel CurrentInstance { get; private set; }
-    public MainViewModel(DialogManager dialogManager, ToastManager toastManager)
+    public MainViewModel(DialogManager dialogManager, ToastManager toastManager) 
     {
-        _dialogManager = dialogManager;
-        _toastManager = toastManager;
+        DialogManager = dialogManager;
+        ToastManager = toastManager;
         _currentContent = new WelcomeView()
         {
-            DataContext = new WelcomeViewModel(_dialogManager, _toastManager)
+            DataContext = new WelcomeViewModel(DialogManager, ToastManager)
         };
         CurrentInstance = this;
     }

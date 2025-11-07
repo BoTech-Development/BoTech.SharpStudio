@@ -5,7 +5,7 @@ using ReactiveUI;
 
 namespace BoTech.SharpStudio.ViewModels;
 
-public class ProjectViewModel (Project project) : ViewModelBase
+public class ProjectViewModel (Project project) : ReactiveObject
 {
     public Project Project { get; } = project;
     public string ProjectName { get; set; } = project.Name;

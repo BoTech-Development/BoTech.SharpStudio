@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using BoTech.SharpStudio.CSharpEngine.Models;
 using BoTech.SharpStudio.ViewModels.Editor.Tools;
+using ShadUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,13 +16,13 @@ namespace BoTech.SharpStudio.ViewModels.Editor
         public Control EditorDocumentView { get; set; }
         public Control EditorRightPaneView { get; set; }
         private List<IToolViewModel<object>> _tools = new List<IToolViewModel<object>>();
-        public EditorContainerViewModel()
+        public EditorContainerViewModel(DialogManager dialogManager, ToastManager toastManager) : base(dialogManager, toastManager)
         {
             
         }
         public void OnSolutionLoaded(Solution solution)
         {
-			SolutionExplorerViewModel vm = new SolutionExplorerViewModel();
+			SolutionExplorerViewModel vm = new SolutionExplorerViewModel(DialogManager, ToastManager);
             SolutionExplorerView view = new SolutionExplorerView()
             {
                 DataContext = vm
