@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BoTech.SharpStudio.CSharpEngine.Models;
+using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,16 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
 		/// <param name="oldObject">The old instance of the CurrentObject Property</param>
 		/// <param name="newObject">New instance</param>
 		public void OnCurrentObjectChanged(T oldObject, T newObject);
+		/// <summary>
+		/// Can be called when deep settings have been changed or the user requests a reload of the project / solution.
+		/// </summary>
+		/// <param name="solution">The reloaded Solution object</param>
+		public void OnSolutionReloaded(Solution solution);
+		/// <summary>
+		/// Can be called when deep settings have been changed or the user requests a reload of the project / solution.
+		/// </summary>
+		/// <param name="project">The reloaded Project object</param>
+		public void OnProjectReloaded(Project project);
 		/// <summary>
 		/// Invoked when the user clicks the reload button in the tool UI.
 		/// </summary>

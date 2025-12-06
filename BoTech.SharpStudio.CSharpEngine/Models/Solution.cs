@@ -53,4 +53,40 @@ public class Solution
         ProjectCollection = new ProjectCollection();
         FileSystemItem = new FileSystemItem(new FileInfo(absolutePath));
 	}
+    public void SaveAllProjectsToDisk()
+    {
+        foreach (Project project in Projects)
+        {
+            project.ProjectInfo.Save();
+        }
+    }
+    public bool CreatesDependencyToProjectACircularDependency(Project fromProject, Project toProject)
+    {
+        bool result = FindProjectDependencyInProjectAndSubProjects(fromProject, toProject);
+        if(!result) result = FindProjectDependencyInProjectAndSubProjects(toProject, fromProject);
+        return result;
+    }
+    /// <summary>
+    /// Searches in all dependencies of the given project for the project to find-
+    /// </summary>
+    /// <param name="project"></param>
+    /// <param name="projectToFind"></param>
+    /// <returns>true, when the <see cref="projectToFind"/> param was found in a dependency of the given project or in a sub project. Else false.</returns>
+    private bool FindProjectDependencyInProjectAndSubProjects(Project project, Project projectToFind)
+    {
+        bool result = false;
+        foreach (Project currentProejct in project.DependsOn)
+        {
+            if(currentProejct == projectToFind) result = true;
+            if(FindProjectDependencyInProjectAndSubProjects(currentProejct, projectToFind)) result = true;
+        }
+        return result;
+    }
+
+    public string GetRelativeProjectPathToSolutionFolder(string absolutePath)
+    {
+        if(FileSystemItem.FileInfo == null && FileSystemItem.FileInfo.Directory == null) throw new InvalidOperationException("Solution folder path could not be determined.");
+        string SolutionFolderPath = FileSystemItem.FileInfo.Directory?.FullName;
+        return ".." + absolutePath.Replace(SolutionFolderPath, string.Empty);
+    }
 }

@@ -18,20 +18,27 @@ namespace BoTech.SharpStudio.ViewModels.Editor
         private List<IToolViewModel<object>> _tools = new List<IToolViewModel<object>>();
         public EditorContainerViewModel(DialogManager dialogManager, ToastManager toastManager) : base(dialogManager, toastManager)
         {
-            
+
         }
         public void OnSolutionLoaded(Solution solution)
         {
-			SolutionExplorerViewModel vm = new SolutionExplorerViewModel(DialogManager, ToastManager);
+            SolutionExplorerViewModel vm = new SolutionExplorerViewModel(DialogManager, ToastManager);
             SolutionExplorerView view = new SolutionExplorerView()
             {
                 DataContext = vm
             };
-			_tools.Add(vm as IToolViewModel<object>);
+            _tools.Add(vm as IToolViewModel<object>);
             vm.CurrentObject = solution;
             vm.InitializeTool();
             EditorLeftPaneView = view;
-			EditorDocumentView = new TextBlock() { Text = "Open a document over the solution explorer." };
-		}
+            EditorDocumentView = new TextBlock() { Text = "Open a document over the solution explorer." };
+        }
+        public void OnSolutionReloaded(Solution solution)
+        {
+            foreach (var tool in _tools)
+            {
+                tool.OnSolutionReloaded(solution);
+            }
+        }
     }
 }

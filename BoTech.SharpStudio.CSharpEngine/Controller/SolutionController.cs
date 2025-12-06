@@ -14,15 +14,26 @@ public class SolutionController
             projectController.AnalyzeProjectFiles(project);
         }
 	}
-	/// <summary>
-	/// Loads all .sln's and .csproj / .vbproj / .fsproj and creates the Models.
-	/// </summary>
-	/// <param name="absoluteFilePath">The path to the main .sln file.</param>
-	/// <returns>A Model structure which represents the structure of the project.</returns>
-	public Solution LoadSolutionFromFile(string absoluteFilePath)
+    public Solution ReloadSolutionFromFile(string absoluteFilePath)
     {
-        MSBuildLocator.RegisterDefaults();
-
+        return LoadSolutionFromFile(absoluteFilePath);
+    }
+    public void ReloadSolutionProjects(Solution solution)
+    {
+        solution.Projects.Clear();
+		LoadProjects(solution);
+		InitializeAllProjects(solution);
+	}
+    /// <summary>
+    /// Loads all .sln's and .csproj / .vbproj / .fsproj and creates the Models.
+    /// </summary>
+    /// <param name="absoluteFilePath">The path to the main .sln file.</param>
+    /// <returns>A Model structure which represents the structure of the project.</returns>
+    public Solution LoadSolutionFromFile(string absoluteFilePath)
+    {
+        if (!MSBuildLocator.IsRegistered)
+			MSBuildLocator.RegisterDefaults();
+       
         Solution solution = TryToLoadSolutionFromFile(absoluteFilePath);
         LoadProjects(solution);
         InitializeAllProjects(solution);

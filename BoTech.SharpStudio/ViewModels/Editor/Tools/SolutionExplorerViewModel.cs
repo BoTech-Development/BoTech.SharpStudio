@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using BoTech.SharpStudio.Controller;
 using BoTech.SharpStudio.CSharpEngine.Models;
 using BoTech.SharpStudio.CSharpEngine.Models.CSharp;
 using BoTech.SharpStudio.CSharpEngine.Models.ProjectFiles;
@@ -15,6 +16,7 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BoTech.SharpStudio.ViewModels.Editor.Tools
 {
@@ -53,7 +55,7 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
         {
             if (node.Project != null)
             {
-                EditDependenciesForProject(node.Project);
+                OpenEditDependenciesForProjectDialog(node.Project);
             }
             else
             {
@@ -78,24 +80,61 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
                 Children = new ObservableCollection<ItemNode>(CreateProjectItemNodes(CurrentObject))
             });
         }
-        private void EditDependenciesForProject(Project project)
+        private void OpenEditDependenciesForProjectDialog(Project project)
         {
             ManageProjectDependenciesViewModel viewModel = new ManageProjectDependenciesViewModel(DialogManager, ToastManager, CurrentObject, project);
             DialogManager.CreateDialog(viewModel)
             .Dismissible()
-            .WithSuccessCallback(vm => SaveDependenciesForProject(vm, project))
+            .WithSuccessCallback(vm => SaveDependenciesForProject(vm))
             .WithCancelCallback(() =>
                 ToastManager.CreateToast("Edit Project Dependencies cancelled.")
                     .DismissOnClick()
                     .ShowWarning())
             .Show();
         }
-        private void SaveDependenciesForProject(ManageProjectDependenciesViewModel vm, Project project)
+        private void SaveDependenciesForProject(ManageProjectDependenciesViewModel vm)
         {
+
             ToastManager.CreateToast("Loading...")
-                    .WithContent($"Aplying your changes to the dependencies.")
+                    .WithContent($"Applying your changes to the dependencies.")
                     .DismissOnClick()
                     .ShowInfo();
+            AddProjectDependenciesToProject(vm);
+            EditorController.Instance.ReloadSolutionProjectsAndRefreshEditorViews(CurrentObject);
+            ToastManager.CreateToast("Ready!")
+                    .WithContent($"Applyed your changes to the dependencies.")
+                    .DismissOnClick()
+                    .ShowSuccess();
+        }
+        private void AddProjectDependenciesToProject(ManageProjectDependenciesViewModel vm)
+        {
+            for(int i = 0; i < vm.Settings.Count; i++)
+            {
+                for(int j = 0; j < vm.Settings[i].Count; j++)
+                {
+                    if(vm.Settings[i][j].IsSelected != vm.SettingsOld[i][j].IsSelected)
+                    {
+                        Project? fromProject = CurrentObject.Projects.Find(p => p.Name == vm.Settings[i][j].CurrentProjectName);
+                        Project? toProject = CurrentObject.Projects.Find(p => p.Name == vm.Settings[i][j].ProjectName);
+                        if (fromProject != null && toProject != null &&
+                            !vm.Settings[i][j].IsDependencyCircular &&
+                            !vm.Settings[i][j].IsTheCurrentProject)
+                        {
+                            try
+                            {
+                                if(vm.Settings[i][j].IsSelected)
+                                    fromProject.TryToAddDependencyToProject(toProject);
+                                else
+                                    fromProject.TryToRemoveDependencyFromProject(toProject);
+							}
+                            catch (ArgumentException ex)
+                            {
+                            }
+                        }
+
+                    }
+                }
+            }
         }
         private List<ItemNode> CreateProjectItemNodes(Solution solution)
         {
@@ -171,6 +210,17 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
         public void OnReload()
         {
             InitializeTool();
+        }
+
+        public void OnSolutionReloaded(Solution solution)
+        {
+            CurrentObject = solution;
+			InitializeTool();
+		}
+
+        public void OnProjectReloaded(Project project)
+        {
+            throw new NotImplementedException();
         }
     }
     public class ItemNode

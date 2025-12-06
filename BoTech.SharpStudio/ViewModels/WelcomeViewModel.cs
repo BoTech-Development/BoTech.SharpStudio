@@ -7,6 +7,7 @@ using System.Threading;
 using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.Threading;
+using BoTech.SharpStudio.Controller;
 using BoTech.SharpStudio.CSharpEngine.Controller;
 using BoTech.SharpStudio.CSharpEngine.Models;
 using BoTech.SharpStudio.Services;
@@ -40,29 +41,17 @@ public class WelcomeViewModel : ViewModelBase
     {
         Thread openFilePickerThread = new Thread(() =>
         {
-            List<IStorageFile> files =StorageProviderService.GetStorageProvider().OpenFilePickerAsync(new FilePickerOpenOptions()
+            List<IStorageFile> files = StorageProviderService.GetStorageProvider().OpenFilePickerAsync(new FilePickerOpenOptions()
             {
                 Title = "Please select an .sln File.",
                 AllowMultiple = false,
             }).Result.ToList();
             Console.WriteLine($"You selected {files[0].Name} => {files[0].Path}");
-            SolutionController controller = new SolutionController();
-            Solution solution = controller.LoadSolutionFromFile(files[0].Path.AbsolutePath);
-            controller.AnalyzeSolution(solution);
-			Dispatcher.UIThread.InvokeAsync(() =>
+            Dispatcher.UIThread.Invoke(() =>
             {
-                ToastManager.CreateToast($"Solution {solution.SolutionFolderPath} loaded with {solution.Projects.Count} projects.")
-                    .WithContent("You can now start working on your solution.")
-                    .DismissOnClick()
-                    .ShowSuccess();
-				EditorContainerViewModel vm = new EditorContainerViewModel(DialogManager, ToastManager);
-                vm.OnSolutionLoaded(solution);
-				MainViewModel.CurrentInstance.CurrentContent = new EditorContainer()
-				{
-					DataContext = vm
-				};
-			});
-		});
+                EditorController.Instance.LoadSolutionAndInitializeEditorViews(files[0].Path.AbsolutePath, DialogManager, ToastManager);
+            });
+        });
         
         openFilePickerThread.Start();
     }

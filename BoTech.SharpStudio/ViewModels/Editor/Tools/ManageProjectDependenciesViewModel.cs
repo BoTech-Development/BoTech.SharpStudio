@@ -29,7 +29,8 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
 			}
         }
         public List<List<DependencyItemViewModel>> Settings { get; private set; } = new List<List<DependencyItemViewModel>>();
-        
+        public List<List<DependencyItemViewModel>> SettingsOld { get; private set; } = new List<List<DependencyItemViewModel>>();
+
         public ReactiveCommand<Unit, Unit> CloseCommand { get; set; }
         public ReactiveCommand<Unit, Unit> SaveCommand { get; set; }
 
@@ -82,22 +83,40 @@ namespace BoTech.SharpStudio.ViewModels.Editor.Tools
         private void InitializeDependenciesForAllProjects(Solution loadedSolution)
         {
             Settings.Clear();
+            SettingsOld.Clear();
             foreach (Project project in loadedSolution.Projects)
             {
                 List<DependencyItemViewModel> projectDependencies = new List<DependencyItemViewModel>();
-				foreach (Project otherProject in loadedSolution.Projects)
+                List<DependencyItemViewModel> projectDependenciesCopy = new List<DependencyItemViewModel>();
+                foreach (Project otherProject in loadedSolution.Projects)
                 {
+                    bool isSelected = project.DependsOn.Contains(otherProject);
+                    bool isCurrentProject = project == otherProject;
+                    bool isDependencyCircular = false;
+
+                    if (!isSelected && !isCurrentProject) isDependencyCircular = loadedSolution.CreatesDependencyToProjectACircularDependency(project, otherProject);//otherProject.DependsOn.Contains(project),
+                    
                     projectDependencies.Add(new DependencyItemViewModel(DialogManager, ToastManager)
                     {
-						CurrentProjectName = project.Name,
-						ProjectName = otherProject.Name,
-                        IsDependencyCircular = otherProject.DependsOn.Contains(project),
-						IsTheCurrentProject = project == otherProject,
-                        IsSelected = project.DependsOn.Contains(otherProject)
+                        CurrentProjectName = project.Name,
+                        ProjectName = otherProject.Name,
+                        IsDependencyCircular = isDependencyCircular,
+                        IsTheCurrentProject = isCurrentProject,
+                        IsSelected = isSelected,
                     });
-				}
+                    projectDependenciesCopy.Add(new DependencyItemViewModel(DialogManager, ToastManager)
+                    {
+                        CurrentProjectName = project.Name,
+                        ProjectName = otherProject.Name,
+                        IsDependencyCircular = isDependencyCircular,
+                        IsTheCurrentProject = isCurrentProject,
+                        IsSelected = isSelected,
+                    });
+                }
                 Settings.Add(projectDependencies);
-			}
+                SettingsOld.Add(projectDependenciesCopy);
+
+            }
         }
         /// <summary>
         /// Updates the View to the selected Project.

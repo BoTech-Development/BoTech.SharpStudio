@@ -85,4 +85,27 @@ public class Project : IInitializable, IAnalyzable
     {
     
     }
+    public void TryToAddDependencyToProject(Project project) 
+    {
+        if (DependsOn.Contains(project)) throw new ArgumentException("Project dependency already added to the project file.");
+        this.ProjectInfo.AddItem("ProjectReference", _solution.GetRelativeProjectPathToSolutionFolder(project.AbsolutePath));
+            
+       /* this.ProjectInfo.AddItem("ProjectReference", project.FileSystemItem.Path, new[]
+        {
+            new KeyValuePair<string,string>("Name", project.Name)
+        });*/
+        this.ProjectInfo.Save();
+    }
+    public void TryToRemoveDependencyFromProject(Project project)
+    {
+        ProjectItem? itemToRemove = null;
+        string pathToProjectToRemove = _solution.GetRelativeProjectPathToSolutionFolder(project.AbsolutePath);
+        itemToRemove = ProjectInfo.GetItems("ProjectReference").Where(item => item.UnevaluatedInclude == pathToProjectToRemove).FirstOrDefault();
+		if (itemToRemove == null)
+        {
+            throw new ArgumentException("The specified project is not a dependency of this project.");
+		}
+        this.ProjectInfo.RemoveItem(itemToRemove);
+        this.ProjectInfo.Save();
+	}
 }
