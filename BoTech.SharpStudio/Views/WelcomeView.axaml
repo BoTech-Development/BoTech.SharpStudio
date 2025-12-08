@@ -28,8 +28,8 @@
                 </Border>
                 <StackPanel Orientation="Vertical"
                             VerticalAlignment="Center">
-                    <shadUi:CardTitle>Welcome to BoTech.SharpStudio®</shadUi:CardTitle>
-                    <shadUi:CardDescription>Your Idea starts here.™</shadUi:CardDescription>
+                    <shadUi:CardTitle>Welcome to BoTech.SharpStudio</shadUi:CardTitle>
+                    <shadUi:CardDescription>Your Idea starts here.</shadUi:CardDescription>
                 </StackPanel>
             </StackPanel>
         </shadUi:Card.Header>

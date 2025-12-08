@@ -22,7 +22,7 @@ public class WelcomeViewModel : ViewModelBase
 {
   
     public ObservableCollection<ProjectViewModel> RecentProjects { get; set;  } = new ObservableCollection<ProjectViewModel>();
-    private string _versionInfo = "Version: v1.0.1.Alpha";
+    private string _versionInfo = "Version: v1.0.2.Alpha";
 
     public string VersionInfo
     {
